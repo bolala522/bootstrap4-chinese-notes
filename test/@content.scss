@@ -1,0 +1,12 @@
+@mixin hover{
+  &:hover{@content}
+}
+a {
+  color: #000;
+  text-decoration: none;
+  background-color: #e1890b;
+  @include hover {
+    color: #000;
+    text-decoration: none;
+  }
+}

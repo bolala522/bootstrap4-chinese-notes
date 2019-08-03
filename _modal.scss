@@ -1,0 +1,179 @@
+@charset "utf-8";
+//模态框
+// .modal-open      - 添加body中，覆盖默认滚动
+// .modal           - 滚动的容器
+// .modal-dialog    - 大小定位等，撑起外壳
+// .modal-content   - 模态框的实体内容
+
+.modal-open {//用在body上
+  overflow: hidden;
+
+  .modal {
+    overflow-x: hidden;//x方向隐藏
+    overflow-y: auto;//y方向上滚动
+  }
+}
+
+//滚动的容器
+.modal {
+  position: fixed;//fixed定位 脱离文档流
+  top: 0;
+  left: 0;
+  z-index: $zindex-modal;//跑到前面来
+  display: none;//默认消失
+  width: 100%;//全屏显示出来
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+}
+
+//撑起外壳
+.modal-dialog {
+  position: relative;//相对定位
+  width: auto;//小屏幕时，宽度自适应
+  margin: $modal-dialog-margin;//来点外边距
+  pointer-events: none;//不响应鼠标事件
+
+  //添加淡出动画
+  .modal.fade & {  //有.modal.fade 下的内容块
+    @include transition($modal-transition);
+    transform: $modal-fade-transform;
+    // transition: transform 0.3s ease-out;动画
+    // transform: translate(0, -50px); 移动50px像素
+  }
+  .modal.show & { //有.modal.show 下的内容块
+    transform: $modal-show-transform;
+  }
+}
+
+//中间位置显示
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;//垂直方向上对齐
+  min-height: calc(100% - (#{$modal-dialog-margin} * 2));
+
+  //为什么要写这个
+  &::before {
+    display: block; // IE10
+    height: calc(100vh - (#{$modal-dialog-margin} * 2));
+    content: "";
+  }
+}
+
+//模态框的实体内容
+.modal-content {//内容
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: $modal-content-bg;
+  background-clip: padding-box;
+  border: $modal-content-border-width solid $modal-content-border-color;
+  @include border-radius($modal-content-border-radius);
+  @include box-shadow($modal-content-box-shadow-xs);
+  // Remove focus outline from opened modal
+  outline: 0;
+}
+
+//半透明黑色背景层
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $zindex-modal-backdrop;
+  width: 100vw;
+  height: 100vh;
+  background-color: $modal-backdrop-bg;
+
+  // Fade for backdrop
+  &.fade { opacity: 0; }//有动画效果
+  &.show { opacity: $modal-backdrop-opacity; }
+}
+
+// 模态框头部
+// 标题和关闭按钮组成的内容
+.modal-header {//标题的样式
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: $modal-header-padding;
+  border-bottom: $modal-header-border-width solid $modal-header-border-color;
+  //形成白边
+  @include border-top-radius($modal-content-border-radius);
+
+  .close {//配合data-dismiss="modal"
+    padding: $modal-header-padding;
+    margin: (-$modal-header-padding-y) (-$modal-header-padding-x) (-$modal-header-padding-y) auto;
+  }
+}
+
+// 头部的标题文案
+.modal-title {
+  margin-bottom: 0;
+  line-height: $modal-title-line-height;
+}
+
+//模态框主体
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: $modal-inner-padding;
+}
+
+// 模态框底部 (交互操作)
+.modal-footer {//footer 主要放按钮之类的
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: $modal-inner-padding;
+  border-top: $modal-footer-border-width solid $modal-footer-border-color;
+  //上边的边
+  @include border-bottom-radius($modal-content-border-radius);
+
+  // Easily place margin between footer elements
+  > :not(:first-child) { margin-left: .25rem; }
+  > :not(:last-child) { margin-right: .25rem; }
+}
+
+//js中使用，根据滚动条宽度进行计算
+.modal-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 50px;
+  height: 50px;
+  overflow: scroll;
+}
+
+// 不同的尺寸
+@include media-breakpoint-up(sm) {
+  .modal-dialog {
+    max-width: $modal-md;
+    margin: $modal-dialog-margin-y-sm-up auto;
+  }
+
+  .modal-dialog-centered {
+    min-height: calc(100% - (#{$modal-dialog-margin-y-sm-up} * 2));
+
+    &::before {
+      height: calc(100vh - (#{$modal-dialog-margin-y-sm-up} * 2));
+    }
+  }
+
+  .modal-content {
+    @include box-shadow($modal-content-box-shadow-sm-up);
+  }
+
+  .modal-sm { max-width: $modal-sm; }
+}
+
+@include media-breakpoint-up(lg) {
+  .modal-lg,
+  .modal-xl {
+    max-width: $modal-lg;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .modal-xl { max-width: $modal-xl; }
+}

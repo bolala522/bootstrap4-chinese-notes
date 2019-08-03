@@ -1,0 +1,191 @@
+@charset "utf-8";
+// 下拉组件的容器
+.dropup,//上啦
+.dropright,//右边
+.dropdown,//下拉
+.dropleft {//左拉
+  position: relative;//相对定位
+}
+
+.dropdown-toggle {//生成后面的箭头
+  @include caret;
+}
+
+// 下拉的主体内容
+.dropdown-menu {
+  position: absolute;//绝对定位
+  top: 100%;//上边距在父元素的位置
+  left: 0;
+  z-index: $zindex-dropdown;//显示层级
+  display: none; //默认是不显示的
+  float: left;//内部的是左浮动的
+  min-width: $dropdown-min-width;//最小宽度
+  padding: $dropdown-padding-y 0;//上下内边距
+  margin: $dropdown-spacer 0 0; // 和上边的按钮有一点距离
+  font-size: $font-size-base;
+  color: $body-color;
+  text-align: left;
+  list-style: none;
+  background-color: $dropdown-bg;
+  background-clip: padding-box;//背景颜色在边框内
+  border: $dropdown-border-width solid $dropdown-border-color;
+  @include border-radius($dropdown-border-radius);//来点圆角
+  @include box-shadow($dropdown-box-shadow);
+}
+
+//
+//下拉内容的对齐方向
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .dropdown-menu#{$infix}-right { //自动靠右
+      right: 0;
+      left: auto;
+    }
+  }
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .dropdown-menu#{$infix}-left { //自动靠左
+      right: auto;
+      left: 0;
+    }
+  }
+}
+
+//
+//四个方向的样式
+
+.dropup {//上拉
+  .dropdown-menu {//还没有真正上去，要配合.show
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: $dropdown-spacer;
+  }
+
+  .dropdown-toggle {//向上的按钮
+    @include caret(up);
+  }
+}
+
+.dropright {//右拉
+  .dropdown-menu {
+    top: 0;//靠顶部，平齐
+    right: auto;
+    left: 100%;//全靠右边
+    margin-top: 0;
+    margin-left: $dropdown-spacer;
+  }
+
+  .dropdown-toggle {//向右的箭头
+    @include caret(right);
+    &::after {
+      vertical-align: 0;
+    }
+  }
+}
+
+.dropleft {
+  .dropdown-menu {
+    top: 0;
+    right: 100%;
+    left: auto;
+    margin-top: 0;
+    margin-right: $dropdown-spacer;
+  }
+
+  .dropdown-toggle {
+    @include caret(left);
+    &::before {
+      vertical-align: 0;
+    }
+  }
+}
+
+.dropdown-menu {
+  &[x-placement^="top"],
+  &[x-placement^="right"],
+  &[x-placement^="bottom"],
+  &[x-placement^="left"] {
+    right: auto;
+    bottom: auto;
+  }
+}
+//分割线
+.dropdown-divider {
+  @include nav-divider($dropdown-divider-bg);
+}
+
+//
+//内部的具体值
+
+.dropdown-item {//内部的具体值
+  display: block;
+  width: 100%; // For `<button>`s 按钮成为通栏
+  padding: $dropdown-item-padding-y $dropdown-item-padding-x;
+  clear: both;//清除浮动
+  font-weight: $font-weight-normal;
+  color: $dropdown-link-color;
+  text-align: inherit;
+  white-space: nowrap; // 防止连接换行
+  background-color: transparent;
+  border: 0; //
+
+  &:first-child {
+    @include border-top-radius($dropdown-inner-border-radius);
+    //上边两个角圆角
+  }
+
+  &:last-child {
+    @include border-bottom-radius($dropdown-inner-border-radius);
+    //下边两个角圆角
+  }
+
+  @include hover-focus {//悬浮 聚焦时的样式
+    color: $dropdown-link-hover-color;
+    text-decoration: none;
+    @include gradient-bg($dropdown-link-hover-bg);
+  }
+
+  &.active,//点击时的样式
+  &:active {
+    color: $dropdown-link-active-color;
+    text-decoration: none;
+    @include gradient-bg($dropdown-link-active-bg);
+  }
+
+  &.disabled,//不能点击时的样式
+  &:disabled {
+    color: $dropdown-link-disabled-color;
+    pointer-events: none;
+    background-color: transparent;
+    @if $enable-gradients {
+      background-image: none;
+    }
+  }
+}
+
+.dropdown-menu.show {
+  display: block;//点击时显示
+}
+
+.dropdown-header {//下拉内容中的标题
+  display: block;
+  padding: $dropdown-padding-y $dropdown-item-padding-x;
+  margin-bottom: 0; // for use with heading elements
+  font-size: $font-size-sm;
+  color: $dropdown-header-color;
+  white-space: nowrap; // as with > li > a
+}
+
+.dropdown-item-text {//下拉内容中的普通文字
+  display: block;
+  padding: $dropdown-item-padding-y $dropdown-item-padding-x;
+  color: $dropdown-link-color;
+}

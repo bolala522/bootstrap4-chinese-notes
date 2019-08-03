@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+.img-fluid {
+  @include img-fluid;
+}
+
+// 图片缩略图
+.img-thumbnail {
+  padding: $thumbnail-padding;
+  background-color: $thumbnail-bg;
+  border: $thumbnail-border-width solid
+  $thumbnail-border-color;
+  @include border-radius($thumbnail-border-radius);
+  @include box-shadow($thumbnail-box-shadow);
+
+  // Keep them at most 100% wide
+  @include img-fluid;
+}
+
+//
+// 图文组
+//
+
+.figure {
+  // 文字居中或居右时也能对齐
+  display: inline-block;
+}
+
+.figure-img {
+  margin-bottom: $spacer / 2;
+  line-height: 1;
+}
+
+.figure-caption {
+  font-size: $figure-caption-font-size;
+  color: $figure-caption-color;
+}

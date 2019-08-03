@@ -1,0 +1,32 @@
+@charset "utf-8";
+@each $position in $positions {
+  //循环 static, relative, absolute, fixed, sticky
+  .position-#{$position} { position: $position !important; }
+}
+
+//速写
+
+.fixed-top {
+  position: fixed;
+  top: 0;//在顶部
+  right: 0;
+  left: 0;//左右通栏
+  z-index: $zindex-fixed;
+}
+
+.fixed-bottom {
+  position: fixed;
+  right: 0;
+  bottom: 0;//在底部
+  left: 0;//左右通栏
+  z-index: $zindex-fixed;
+}
+
+.sticky-top {
+  @supports (position: sticky) {
+    //@supports 功能查询 浏览器支持吗
+    position: sticky;
+    top: 0;
+    z-index: $zindex-sticky;
+  }
+}

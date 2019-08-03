@@ -1,0 +1,12 @@
+@charset "utf-8";
+@mixin badge-variant($bg) {
+  color: color-yiq($bg);//字色
+  background-color: $bg;//背景色
+
+  @at-root a#{&} {
+    @include hover-focus {// a.badge-primary:hover, a.badge-primary:focus
+      color: color-yiq($bg);//悬浮时的字色
+      background-color: darken($bg, 10%);//背景色
+    }
+  }
+}

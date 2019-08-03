@@ -1,0 +1,54 @@
+@charset "utf-8";
+//
+// Rotating border
+//
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }//旋转360度的关键帧
+}
+
+.spinner-border {
+  display: inline-block;//行内块
+  width: $spinner-width;
+  height: $spinner-height;
+  vertical-align: text-bottom;
+  border: $spinner-border-width solid currentColor;
+  border-right-color: transparent;//少了一条边
+  border-radius: 50%;//变成圆形
+  animation: spinner-border .75s linear infinite;//添加动画
+}
+
+.spinner-border-sm {//尺寸小一点
+  width: $spinner-width-sm;
+  height: $spinner-height-sm;
+  border-width: $spinner-border-width-sm;
+}
+
+//
+// Growing circle 另一种样式
+//
+
+@keyframes spinner-grow {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.spinner-grow {
+  display: inline-block;
+  width: $spinner-width;
+  height: $spinner-height;
+  vertical-align: text-bottom;
+  background-color: currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  animation: spinner-grow .75s linear infinite;
+}
+
+.spinner-grow-sm { //尺寸小一点
+  width: $spinner-width-sm;
+  height: $spinner-height-sm;
+}

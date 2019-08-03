@@ -1,0 +1,20 @@
+@charset "utf-8";
+@mixin transition($transition...) {
+  @if $enable-transitions {//默认开启
+    @if length($transition) == 0 {//传入的数组有几个值
+      transition: $transition-base;
+      //如果没写 all .2s ease-in-out !default;
+    } @else {
+      transition: $transition;
+      //否则就是传入的值
+    }
+  }
+
+  @if $enable-prefers-reduced-motion-media-query {
+    //默认开启
+    @media screen and (prefers-reduced-motion: reduce) {
+      //减少运动媒体查询
+      transition: none;
+    }
+  }
+}

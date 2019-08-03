@@ -1,0 +1,44 @@
+@charset "utf-8";
+/*!
+ * Bootstrap v4.2.1 (https://getbootstrap.com/)
+ * Copyright 2011-2018 The Bootstrap Authors
+ * Copyright 2011-2018 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+@import "functions";//这个还不清楚作用
+@import "variables";//各种参数
+@import "mixins";//混合
+@import "root";//:root全局设置
+@import "reboot";//重置
+@import "type";//排版
+@import "images";//图片
+@import "code";//代码显示
+@import "grid";//栅格系统
+@import "tables";//表格
+@import "forms";//表单
+@import "buttons";//按钮
+@import "transitions";//动画
+@import "dropdown";//下拉
+@import "button-group";//按钮组
+@import "input-group";//一个输入框的组合
+@import "custom-forms";//自定义样式的表单
+@import "nav";//导航
+@import "navbar";//导航条
+@import "card";//卡片
+@import "breadcrumb";//面包屑
+@import "pagination";//分页
+@import "badge";//徽章
+@import "jumbotron";//大屏幕
+@import "alert";//提醒框
+@import "progress";//进度条
+@import "media";//媒体对象
+@import "list-group";//列表组
+@import "close";//关闭按钮
+@import "toasts";//消息弹出框
+@import "modal";//模态框
+@import "tooltip";//悬浮弹出框
+@import "popover";//点击弹出框
+@import "carousel";//轮播
+@import "spinners";//加载圈
+@import "utilities";//实用工具
+@import "print";//打印样式

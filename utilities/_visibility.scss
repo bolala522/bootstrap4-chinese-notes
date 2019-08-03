@@ -1,0 +1,7 @@
+@charset "utf-8";
+.visible {
+  @include invisible(visible);//可见
+}
+.invisible {
+  @include invisible(hidden);//不可见
+}

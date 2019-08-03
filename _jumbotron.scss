@@ -1,0 +1,17 @@
+@charset "utf-8";
+.jumbotron {
+  padding: $jumbotron-padding ($jumbotron-padding / 2);//先写小尺寸的内边距
+  margin-bottom: $jumbotron-padding;//底外边距
+  background-color: $jumbotron-bg;//背景颜色
+  @include border-radius($border-radius-lg);
+
+  @include media-breakpoint-up(sm) { //@media (min-width: 576px)
+    padding: ($jumbotron-padding * 2) $jumbotron-padding;//大屏幕的内边距更大
+  }
+}
+
+.jumbotron-fluid {//没有边距 没有圆角
+  padding-right: 0;
+  padding-left: 0;
+  @include border-radius(0);
+}

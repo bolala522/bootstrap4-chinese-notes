@@ -1,0 +1,18 @@
+@charset "utf-8";
+@each $color, $value in $theme-colors {//循环数组
+  @include bg-variant(".bg-#{$color}", $value);
+}
+
+@if $enable-gradients {//如果允许渐变的话
+  @each $color, $value in $theme-colors {
+    @include bg-gradient-variant(".bg-gradient-#{$color}", $value);
+  }
+}
+//补充纯白和透明背景色
+.bg-white {
+  background-color: $white !important;
+}
+
+.bg-transparent {
+  background-color: transparent !important;
+}

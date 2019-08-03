@@ -1,0 +1,274 @@
+@charset "utf-8";
+
+// Navbar
+// Navbar brand
+// Navbar nav
+// Navbar text
+// Navbar divider
+// Responsive navbar
+// Navbar position
+// Navbar themes
+
+// 导航条
+// 导航条的容器，在此基础上可以实现折叠全宽固定定位等
+
+.navbar {
+  position: relative;//相对定位
+  display: flex;//flex布局
+  flex-wrap: wrap; //  可以换行
+  align-items: center;//垂直居中
+  justify-content: space-between; // 水平居中
+  padding: $navbar-padding-y $navbar-padding-x; //形成四周内边距
+
+  > .container,
+  > .container-fluid {//为了防止内部用容器，也加一个
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+
+// LOGO区
+
+.navbar-brand {
+  display: inline-block;//行内块
+  padding-top: $navbar-brand-padding-y;
+  padding-bottom: $navbar-brand-padding-y;
+  margin-right: $navbar-padding-x;//来个右外边距
+  font-size: $navbar-brand-font-size;
+  line-height: inherit;
+  white-space: nowrap;
+
+  @include hover-focus {
+    text-decoration: none;
+  }
+}
+
+
+// Navbar nav后面的导航条（可被折叠）
+
+.navbar-nav {
+  display: flex;//flex布局
+  flex-direction: column; //默认是列布局
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+
+  .nav-link {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .dropdown-menu {
+    position: static;
+    float: none;
+  }
+}
+
+
+// Navbar text//导航条上的文字
+
+.navbar-text {
+  display: inline-block;
+  padding-top: $nav-link-padding-y;
+  padding-bottom: $nav-link-padding-y;
+}
+
+
+// navbar响应式折叠
+//折叠由折叠组件实现功能 要加.collapse
+
+.navbar-collapse {
+  flex-basis: 100%;//占满剩余空间
+  flex-grow: 1;//自动增长
+  align-items: center;//保持居中对齐
+}
+
+//用于在导航栏处于折叠状态时切换导航栏的按钮
+.navbar-toggler {//切换的按钮
+  padding: $navbar-toggler-padding-y $navbar-toggler-padding-x;//来点内边距
+  font-size: $navbar-toggler-font-size;
+  line-height: 1;//自身的1倍
+  background-color: transparent;  // 背景色为透明 先把颜色去掉 为后面做准备
+  border: $border-width solid transparent;
+  @include border-radius($navbar-toggler-border-radius);
+
+  @include hover-focus {
+    text-decoration: none;
+  }
+
+  &:not(:disabled):not(.disabled) {
+    cursor: pointer;
+  }
+}
+
+//作为一个单独的元素，方便后面自己定制
+.navbar-toggler-icon {
+  display: inline-block;//行内块
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  content: "";
+  background: no-repeat center center;
+  background-size: 100% 100%;
+}
+
+//实现折叠 要实现隐藏的话必须加这个
+.navbar-expand {
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    $next: breakpoint-next($breakpoint, $grid-breakpoints);
+    $infix: breakpoint-infix($next, $grid-breakpoints);
+    //sm 开始的数组
+
+    &#{$infix} {
+      @include media-breakpoint-down($breakpoint) {
+        > .container,
+        > .container-fluid {
+          padding-right: 0;
+          padding-left: 0;
+        }
+      }
+
+      @include media-breakpoint-up($next) {
+        flex-flow: row nowrap;//行分布  不换行
+        justify-content: flex-start;//向左对齐
+
+        .navbar-nav {
+          flex-direction: row;//折叠区也是行
+
+          .dropdown-menu {
+            position: absolute;
+          }
+
+          .nav-link {
+            padding-right: $navbar-nav-link-padding-x;
+            padding-left: $navbar-nav-link-padding-x;
+          }
+        }
+
+        > .container,
+        > .container-fluid {
+          flex-wrap: nowrap;
+        }
+
+        .navbar-collapse {
+          display: flex !important;
+          flex-basis: auto;
+        }
+
+        .navbar-toggler {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+
+// 导航条主题 明暗两种
+//用于在浅色或深色背景的导航栏之间切换的样式。
+//浅色背景下的深色链接
+.navbar-light {
+  .navbar-brand {
+    color: $navbar-light-brand-color;
+
+    @include hover-focus {
+      color: $navbar-light-brand-hover-color;
+    }
+  }
+
+  .navbar-nav {
+    .nav-link {
+      color: $navbar-light-color;
+
+      @include hover-focus {
+        color: $navbar-light-hover-color;
+      }
+
+      &.disabled {
+        color: $navbar-light-disabled-color;
+      }
+    }
+
+    .show > .nav-link,
+    .active > .nav-link,
+    .nav-link.show,
+    .nav-link.active {
+      color: $navbar-light-active-color;
+    }
+  }
+
+  .navbar-toggler {
+    color: $navbar-light-color;
+    border-color: $navbar-light-toggler-border-color;
+  }
+
+  .navbar-toggler-icon {
+    background-image: $navbar-light-toggler-icon-bg;
+  }
+
+  .navbar-text {
+    color: $navbar-light-color;
+    a {
+      color: $navbar-light-active-color;
+
+      @include hover-focus {
+        color: $navbar-light-active-color;
+      }
+    }
+  }
+}
+
+// White links against a dark background
+.navbar-dark {
+  .navbar-brand {
+    color: $navbar-dark-brand-color;
+
+    @include hover-focus {
+      color: $navbar-dark-brand-hover-color;
+    }
+  }
+
+  .navbar-nav {
+    .nav-link {
+      color: $navbar-dark-color;
+
+      @include hover-focus {
+        color: $navbar-dark-hover-color;
+      }
+
+      &.disabled {
+        color: $navbar-dark-disabled-color;
+      }
+    }
+
+    .show > .nav-link,
+    .active > .nav-link,
+    .nav-link.show,
+    .nav-link.active {
+      color: $navbar-dark-active-color;
+    }
+  }
+
+  .navbar-toggler {
+    color: $navbar-dark-color;
+    border-color: $navbar-dark-toggler-border-color;
+  }
+
+  .navbar-toggler-icon {
+    background-image: $navbar-dark-toggler-icon-bg;
+  }
+
+  .navbar-text {
+    color: $navbar-dark-color;
+    a {
+      color: $navbar-dark-active-color;
+
+      @include hover-focus {
+        color: $navbar-dark-active-color;
+      }
+    }
+  }
+}

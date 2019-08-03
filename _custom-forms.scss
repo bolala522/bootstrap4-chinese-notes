@@ -1,0 +1,495 @@
+@charset "utf-8";
+//自定义的表单
+
+//复选框 单选按钮
+
+.custom-control {//自定义表单样式
+  position: relative;
+  display: block;
+  min-height: $font-size-base * $line-height-base;
+  padding-left: $custom-control-gutter + $custom-control-indicator-size;
+}
+
+.custom-control-inline {//水平分布
+  display: inline-flex;
+  margin-right: $custom-control-spacer-x;
+}
+
+.custom-control-input {//内部的复选框/单选按钮样式
+  position: absolute;
+  z-index: -1;
+  opacity: 0;//默认是0 不显示了
+
+  &:checked ~ .custom-control-label::before {
+    //选中的话，label前面生成一个蓝色框
+    color: $custom-control-indicator-checked-color;
+    border-color: $custom-control-indicator-checked-border-color;
+    @include gradient-bg($custom-control-indicator-checked-bg);
+    @include box-shadow($custom-control-indicator-checked-box-shadow);
+  }
+
+  &:focus ~ .custom-control-label::before {
+    //label前面生成一个蓝色框
+    @if $enable-shadows {
+      box-shadow: $input-box-shadow, $input-focus-box-shadow;
+    } @else {
+      box-shadow: $custom-control-indicator-focus-box-shadow;
+    }
+  }
+
+  &:focus:not(:checked) ~ .custom-control-label::before {
+    //几种不同状态
+    border-color: $custom-control-indicator-focus-border-color;
+  }
+
+  &:not(:disabled):active ~ .custom-control-label::before {
+    color: $custom-control-indicator-active-color;
+    background-color: $custom-control-indicator-active-bg;
+    border-color: $custom-control-indicator-active-border-color;
+    @include box-shadow($custom-control-indicator-active-box-shadow);
+  }
+
+  &:disabled {
+    ~ .custom-control-label {
+      color: $custom-control-label-disabled-color;
+
+      &::before {
+        background-color: $custom-control-indicator-disabled-bg;
+      }
+    }
+  }
+}
+
+// 说明文字+生成的图标
+//
+
+.custom-control-label {//后面的说明文字
+  position: relative;
+  margin-bottom: 0;
+  vertical-align: top;
+
+  // 前面的框
+  &::before {
+    position: absolute;//相对定位
+    top: ($font-size-base * $line-height-base - $custom-control-indicator-size) / 2;//前面来个定位
+    left: -($custom-control-gutter + $custom-control-indicator-size);
+    display: block;//块级元素
+    width: $custom-control-indicator-size;
+    height: $custom-control-indicator-size;
+    pointer-events: none;//鼠标选不上
+    content: "";
+    background-color: $custom-control-indicator-bg;
+    border: $custom-control-indicator-border-color solid $custom-control-indicator-border-width;
+    @include box-shadow($custom-control-indicator-box-shadow);
+  }
+
+  // Foreground (icon)内部图标的设置
+  &::after {
+    position: absolute;//相对定位
+    top: ($font-size-base * $line-height-base - $custom-control-indicator-size) / 2;
+    left: -($custom-control-gutter + $custom-control-indicator-size);
+    display: block;
+    width: $custom-control-indicator-size;
+    height: $custom-control-indicator-size;
+    content: "";
+    background-repeat: no-repeat;//为后面的图片做准备
+    background-position: center center;//图片居中
+    background-size: $custom-control-indicator-bg-size;//图片大小
+  }
+}
+
+
+// Checkboxes 复选框
+//
+// Tweak just a few things for checkboxes.
+
+.custom-checkbox {
+  .custom-control-label::before {
+    @include border-radius($custom-checkbox-indicator-border-radius);
+  }
+
+  .custom-control-input:checked ~ .custom-control-label {
+    &::after {
+      background-image: $custom-checkbox-indicator-icon-checked;
+    }
+  }
+
+  .custom-control-input:indeterminate ~ .custom-control-label {
+    &::before {
+      border-color: $custom-checkbox-indicator-indeterminate-border-color;
+      @include gradient-bg($custom-checkbox-indicator-indeterminate-bg);
+      @include box-shadow($custom-checkbox-indicator-indeterminate-box-shadow);
+    }
+    &::after {//内部的图标
+      background-image: $custom-checkbox-indicator-icon-indeterminate;
+    }
+  }
+
+  .custom-control-input:disabled {
+    &:checked ~ .custom-control-label::before {
+      background-color: $custom-control-indicator-checked-disabled-bg;
+    }
+    &:indeterminate ~ .custom-control-label::before {
+      background-color: $custom-control-indicator-checked-disabled-bg;
+    }
+  }
+}
+
+// Radios单选框
+//
+// Tweak just a few things for radios.
+
+.custom-radio {
+  .custom-control-label::before {
+    border-radius: $custom-radio-indicator-border-radius;//50%一个圆形
+  }
+
+  .custom-control-input:checked ~ .custom-control-label {
+    &::after {
+      background-image: $custom-radio-indicator-icon-checked;//内部的小圆点
+    }
+  }
+
+  .custom-control-input:disabled {
+    &:checked ~ .custom-control-label::before {
+      background-color: $custom-control-indicator-checked-disabled-bg;
+    }
+  }
+}
+
+
+// switches开关按钮  点击原理还是不太懂
+
+.custom-switch {
+  padding-left: $custom-switch-width + $custom-control-gutter;
+
+  .custom-control-label {
+    &::before {//before是前面的底
+      left: -($custom-switch-width + $custom-control-gutter);
+      width: $custom-switch-width;
+      pointer-events: all;
+      border-radius: $custom-switch-indicator-border-radius;
+    }
+
+    &::after {//after是前面的小圆点
+      top: calc(#{(($font-size-base * $line-height-base - $custom-control-indicator-size) / 2)} + #{$custom-control-indicator-border-width * 2});
+      left: calc(#{-($custom-switch-width + $custom-control-gutter)} + #{$custom-control-indicator-border-width * 2});
+      width: $custom-switch-indicator-size;
+      height: $custom-switch-indicator-size;
+      background-color: $custom-control-indicator-border-color;
+      border-radius: $custom-switch-indicator-border-radius;
+      @include transition(transform .15s ease-in-out, $custom-forms-transition);
+    }
+  }
+
+  .custom-control-input:checked ~ .custom-control-label {
+    &::after {
+      background-color: $custom-control-indicator-bg;
+      transform: translateX($custom-switch-width - $custom-control-indicator-size);
+    }
+  }
+
+  .custom-control-input:disabled {
+    &:checked ~ .custom-control-label::before {
+      background-color: $custom-control-indicator-checked-disabled-bg;
+    }
+  }
+}
+
+
+// Select 选项框
+
+
+.custom-select {
+  display: inline-block;
+  width: 100%;//通栏宽度
+  height: $custom-select-height;
+  padding: $custom-select-padding-y ($custom-select-padding-x + $custom-select-indicator-padding) $custom-select-padding-y $custom-select-padding-x;
+  //来一个内边距 实现对齐
+  font-weight: $custom-select-font-weight;
+  line-height: $custom-select-line-height;
+  color: $custom-select-color;
+  vertical-align: middle;
+  background: $custom-select-background;
+  background-color: $custom-select-bg;
+  border: $custom-select-border-width solid $custom-select-border-color;
+  @if $enable-rounded {
+    border-radius: $custom-select-border-radius;
+  } @else {
+    border-radius: 0;
+  }
+  @include box-shadow($custom-select-box-shadow);
+  appearance: none;//去掉按钮选矿的默认样式
+
+  &:focus {//选中时的外边框
+    border-color: $custom-select-focus-border-color;
+    outline: 0;
+    @if $enable-shadows {
+      box-shadow: $custom-select-box-shadow, $custom-select-focus-box-shadow;
+    } @else {
+      box-shadow: $custom-select-focus-box-shadow;
+    }
+
+    &::-ms-value {//兼容ie的外观样式
+      // For visual consistency with other platforms/browsers,
+      // suppress the default white text on blue background highlight given to
+      // the selected option text when the (still closed) <select> receives focus
+      // in IE and (under certain conditions) Edge.
+      // See https://github.com/twbs/bootstrap/issues/19398.
+      color: $input-color;
+      background-color: $input-bg;
+    }
+  }
+
+  &[multiple],//当可以多选时
+  &[size]:not([size="1"]) {//这个选择器好玩 可见不为1时
+    height: auto;
+    padding-right: $custom-select-padding-x;
+    background-image: none;
+  }
+
+  &:disabled {
+    color: $custom-select-disabled-color;
+    background-color: $custom-select-disabled-bg;
+  }
+
+  // Hides the default caret in IE11
+  &::-ms-expand {//隐藏IE后面的箭头
+    opacity: 0;
+  }
+}
+
+.custom-select-sm {//小尺寸的select
+  height: $custom-select-height-sm;
+  padding-top: $custom-select-padding-y-sm;
+  padding-bottom: $custom-select-padding-y-sm;
+  padding-left: $custom-select-padding-x-sm;
+  font-size: $custom-select-font-size-sm;
+}
+
+.custom-select-lg {//大尺寸
+  height: $custom-select-height-lg;
+  padding-top: $custom-select-padding-y-lg;
+  padding-bottom: $custom-select-padding-y-lg;
+  padding-left: $custom-select-padding-x-lg;
+  font-size: $custom-select-font-size-lg;
+}
+
+
+// File上传表单的样式
+
+.custom-file {
+  position: relative;
+  display: inline-block;
+  width: 100%;//通栏宽度
+  height: $custom-file-height;
+  margin-bottom: 0;
+}
+
+.custom-file-input {//用在file的input
+  position: relative;
+  z-index: 2;
+  width: 100%;//通栏
+  height: $custom-file-height;
+  margin: 0;
+  opacity: 0;//隐藏掉 看不见
+
+  &:focus ~ .custom-file-label {//获得焦点的边框
+    border-color: $custom-file-focus-border-color;
+    box-shadow: $custom-file-focus-box-shadow;
+  }
+
+  &:disabled ~ .custom-file-label {
+    background-color: $custom-file-disabled-bg;
+  }
+
+  @each $lang, $value in $custom-file-text {
+    &:lang(#{$lang}) ~ .custom-file-label::after {//不同的语言显示不同和的文字
+      content: $value;//内部的文字
+    }
+  }
+
+  ~ .custom-file-label[data-browse]::after {
+    content: attr(data-browse);
+  }
+}
+
+.custom-file-label {
+  position: absolute;//相对定位
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: $custom-file-height;
+  padding: $custom-file-padding-y $custom-file-padding-x;
+  font-weight: $custom-file-font-weight;
+  line-height: $custom-file-line-height;
+  color: $custom-file-color;
+  background-color: $custom-file-bg;
+  border: $custom-file-border-width solid $custom-file-border-color;
+  @include border-radius($custom-file-border-radius);
+  @include box-shadow($custom-file-box-shadow);
+
+  &::after {//后面按钮的样式
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: $custom-file-height-inner;
+    padding: $custom-file-padding-y $custom-file-padding-x;
+    line-height: $custom-file-line-height;
+    color: $custom-file-button-color;
+    content: "Browse";
+    @include gradient-bg($custom-file-button-bg);
+    border-left: inherit;
+    @include border-radius(0 $custom-file-border-radius $custom-file-border-radius 0);
+  }
+}
+
+// Range进度条
+
+
+.custom-range {
+  width: 100%;
+  height: calc(#{$custom-range-thumb-height} + #{$custom-range-thumb-focus-box-shadow-width * 2});
+  padding: 0; // Need to reset padding
+  background-color: transparent;
+  appearance: none;
+
+  &:focus {
+    outline: none;
+
+    // Pseudo-elements must be split across multiple rulesets to have an effect.
+    // No box-shadow() mixin for focus accessibility.
+    &::-webkit-slider-thumb { box-shadow: $custom-range-thumb-focus-box-shadow; }
+    &::-moz-range-thumb     { box-shadow: $custom-range-thumb-focus-box-shadow; }
+    &::-ms-thumb            { box-shadow: $custom-range-thumb-focus-box-shadow; }
+  }
+
+  &::-moz-focus-outer {
+    border: 0;
+  }
+
+  &::-webkit-slider-thumb {
+    width: $custom-range-thumb-width;
+    height: $custom-range-thumb-height;
+    margin-top: ($custom-range-track-height - $custom-range-thumb-height) / 2; // Webkit specific
+    @include gradient-bg($custom-range-thumb-bg);
+    border: $custom-range-thumb-border;
+    @include border-radius($custom-range-thumb-border-radius);
+    @include box-shadow($custom-range-thumb-box-shadow);
+    @include transition($custom-forms-transition);
+    appearance: none;
+
+    &:active {
+      @include gradient-bg($custom-range-thumb-active-bg);
+    }
+  }
+
+  &::-webkit-slider-runnable-track {
+    width: $custom-range-track-width;
+    height: $custom-range-track-height;
+    color: transparent; // Why?
+    cursor: $custom-range-track-cursor;
+    background-color: $custom-range-track-bg;
+    border-color: transparent;
+    @include border-radius($custom-range-track-border-radius);
+    @include box-shadow($custom-range-track-box-shadow);
+  }
+
+  &::-moz-range-thumb {
+    width: $custom-range-thumb-width;
+    height: $custom-range-thumb-height;
+    @include gradient-bg($custom-range-thumb-bg);
+    border: $custom-range-thumb-border;
+    @include border-radius($custom-range-thumb-border-radius);
+    @include box-shadow($custom-range-thumb-box-shadow);
+    @include transition($custom-forms-transition);
+    appearance: none;
+
+    &:active {
+      @include gradient-bg($custom-range-thumb-active-bg);
+    }
+  }
+
+  &::-moz-range-track {
+    width: $custom-range-track-width;
+    height: $custom-range-track-height;
+    color: transparent;
+    cursor: $custom-range-track-cursor;
+    background-color: $custom-range-track-bg;
+    border-color: transparent; // Firefox specific?
+    @include border-radius($custom-range-track-border-radius);
+    @include box-shadow($custom-range-track-box-shadow);
+  }
+
+  &::-ms-thumb {
+    width: $custom-range-thumb-width;
+    height: $custom-range-thumb-height;
+    margin-top: 0; // Edge specific
+    margin-right: $custom-range-thumb-focus-box-shadow-width; // Workaround that overflowed box-shadow is hidden.
+    margin-left: $custom-range-thumb-focus-box-shadow-width;  // Workaround that overflowed box-shadow is hidden.
+    @include gradient-bg($custom-range-thumb-bg);
+    border: $custom-range-thumb-border;
+    @include border-radius($custom-range-thumb-border-radius);
+    @include box-shadow($custom-range-thumb-box-shadow);
+    @include transition($custom-forms-transition);
+    appearance: none;
+
+    &:active {
+      @include gradient-bg($custom-range-thumb-active-bg);
+    }
+  }
+
+  &::-ms-track {
+    width: $custom-range-track-width;
+    height: $custom-range-track-height;
+    color: transparent;
+    cursor: $custom-range-track-cursor;
+    background-color: transparent;
+    border-color: transparent;
+    border-width: $custom-range-thumb-height / 2;
+    @include box-shadow($custom-range-track-box-shadow);
+  }
+
+  &::-ms-fill-lower {
+    background-color: $custom-range-track-bg;
+    @include border-radius($custom-range-track-border-radius);
+  }
+
+  &::-ms-fill-upper {
+    margin-right: 15px; // arbitrary?
+    background-color: $custom-range-track-bg;
+    @include border-radius($custom-range-track-border-radius);
+  }
+
+  &:disabled {
+    &::-webkit-slider-thumb {
+      background-color: $custom-range-thumb-disabled-bg;
+    }
+
+    &::-webkit-slider-runnable-track {
+      cursor: default;
+    }
+
+    &::-moz-range-thumb {
+      background-color: $custom-range-thumb-disabled-bg;
+    }
+
+    &::-moz-range-track {
+      cursor: default;
+    }
+
+    &::-ms-thumb {
+      background-color: $custom-range-thumb-disabled-bg;
+    }
+  }
+}
+
+.custom-control-label::before,//来点动画效果
+.custom-file-label,
+.custom-select {
+  @include transition($custom-forms-transition);
+}

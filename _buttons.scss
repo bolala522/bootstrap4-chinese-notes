@@ -1,0 +1,145 @@
+@charset "utf-8";
+
+// 按钮基础样式
+
+.btn {
+  display: inline-block;//行内块
+  font-weight: $btn-font-weight;//字重
+  color: $body-color;//字色
+  text-align: center;//水平居中
+  vertical-align: middle;//垂直居中
+  user-select: none;//鼠标不能选中文本
+  background-color: transparent;
+  border: $btn-border-width solid transparent;//透明边框
+  @include button-size
+  ($btn-padding-y,
+   $btn-padding-x,
+   $btn-font-size,
+   $btn-line-height,
+   $btn-border-radius);
+  @include transition($btn-transition);//动画效果
+
+  @include hover {//悬停效果
+    color: $body-color;
+    text-decoration: none;
+  }
+
+  &:focus,//:focus 就是按下时的状态
+  &.focus {
+    outline: 0;
+    box-shadow: $btn-focus-box-shadow;
+  }
+
+  &.disabled,
+  &:disabled {
+    opacity: $btn-disabled-opacity;
+    @include box-shadow(none);
+  }
+
+  &:not(:disabled):not(.disabled) {
+    cursor: pointer;
+  }
+
+  &:not(:disabled):not(.disabled):active,
+  &:not(:disabled):not(.disabled).active {
+    @include box-shadow($btn-active-box-shadow);
+
+    &:focus {
+      @include box-shadow
+      ($btn-focus-box-shadow, $btn-active-box-shadow);
+    }
+  }
+}
+
+a.btn.disabled,
+fieldset:disabled a.btn {
+  pointer-events: none;//这个元素成为海市蜃楼
+}
+
+
+//
+// 颜色按钮
+//
+
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    @include button-variant($value, $value);
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .btn-outline-#{$color} {
+    @include button-outline-variant($value);
+    //.btn-outline-primary
+  }
+}
+
+
+//
+// Link buttons 链接按钮
+//
+.btn-link {
+  font-weight: $font-weight-normal;
+  color: $link-color;
+
+  @include hover {
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
+  }
+
+  &:focus,
+  &.focus {
+    text-decoration: $link-hover-decoration;
+    box-shadow: none;
+  }
+
+  &:disabled,
+  &.disabled {
+    color: $btn-link-disabled-color;
+    pointer-events: none;
+  }
+}
+
+
+//
+// Button Sizes不同尺寸的按钮
+//
+
+.btn-lg{ //大按钮
+  @include
+  button-size
+  ($btn-padding-y-lg, $btn-padding-x-lg,
+   $btn-font-size-lg, $btn-line-height-lg,
+   $btn-border-radius-lg);
+}
+
+.btn-sm {//小按钮
+  @include button-size
+  ($btn-padding-y-sm, $btn-padding-x-sm,
+   $btn-font-size-sm, $btn-line-height-sm,
+   $btn-border-radius-sm);
+}
+
+
+//
+// Block button通栏按钮
+//
+
+.btn-block {//块级按钮
+  display: block;
+  width: 100%;
+
+  // 多个时 添加间隔
+  + .btn-block {
+    margin-top: $btn-block-spacing-y;//多个时有上外边距
+  }
+}
+
+// Specificity overrides
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  &.btn-block {
+    width: 100%;
+  }
+}

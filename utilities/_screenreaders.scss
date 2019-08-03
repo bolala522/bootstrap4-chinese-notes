@@ -1,0 +1,12 @@
+@charset "utf-8";
+//
+// Screenreaders 屏幕阅读器
+//
+
+.sr-only {
+  @include sr-only();
+}
+
+.sr-only-focusable {
+  @include sr-only-focusable();
+}

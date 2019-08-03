@@ -1,0 +1,76 @@
+@charset "utf-8";
+@mixin make-grid-columns
+($columns: $grid-columns,
+ $gutter: $grid-gutter-width,
+ $breakpoints: $grid-breakpoints) {
+  //传入3个参数：栅格列数 列间距 断点数组
+
+  %grid-column {//占位符样式
+    position: relative;//相对定位 是否为了内部的定位?
+    width: 100%;
+    padding-right: $gutter / 2;
+    padding-left: $gutter / 2;//列间距
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    //循环 配合下面的轮数 xs sm md lg xl
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+    //得到:空字符串 -sm -md -lg -xl
+
+    @for $i from 1 through $columns { //1~12循环
+      .col#{$infix}-#{$i} {
+        //1轮col-1~col-12  2轮col-sm-1~col-sm-12......
+        @extend %grid-column;//继承占位符样式
+      }
+    }
+    .col#{$infix},//1轮col 2轮col-sm......
+    .col#{$infix}-auto {//1轮col-auto 2轮col-sm-auto......
+      @extend %grid-column;
+    }
+
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+      //得到 null 576px 768px 992px 1200px 添加媒体查询
+
+      .col#{$infix} {//1轮 col
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 100%;
+        //相当于flex:1 知识点
+      }
+      .col#{$infix}-auto {//1轮 col-auto
+        flex: 0 0 auto;
+        width: auto;
+        max-width: 100%;
+        //相当于flex:auto
+      }
+
+      @for $i from 1 through $columns { //1~12循环
+        .col#{$infix}-#{$i} {//1轮 col-1~col-12
+          @include make-col($i, $columns);//设置宽度
+        }
+      }
+
+      .order#{$infix}-first { order: -1; }
+      //1轮 order-first 2轮 order-sm-first...
+
+      .order#{$infix}-last { order: $columns + 1; }
+      //1轮 order-last 2轮 order-sm-last...
+
+      @for $i from 0 through $columns {//0~12循环
+        .order#{$infix}-#{$i} { order: $i; }
+        //1轮 order-1 orde-2... 2轮 order-sm-1 orde-sm-2...
+      }
+
+
+      @for $i from 0 through ($columns - 1) {//0~11循环
+        @if not ($infix == "" and $i == 0) {
+          //排除掉前缀是0 并且$i是0
+          .offset#{$infix}-#{$i} {
+            //1轮 offset-1~offset-11. 2轮 offset-0~offset-11.
+            @include make-col-offset($i, $columns);
+          }
+        }
+      }
+    }
+  }
+}

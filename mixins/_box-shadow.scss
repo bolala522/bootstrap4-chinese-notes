@@ -1,0 +1,6 @@
+@charset "utf-8";
+@mixin box-shadow($shadow...) {
+  @if $enable-shadows {//默认关闭
+    box-shadow: $shadow;
+  }
+}

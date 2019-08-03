@@ -1,0 +1,176 @@
+@charset "utf-8";
+
+.table {
+  width: 100%;
+  margin-bottom: $spacer;
+  background-color: $table-bg;
+  //背景色设置成透明的
+
+  th,
+  td {//通用单元格
+    padding: $table-cell-padding;
+    vertical-align: top;//top
+    border-top: $table-border-width solid $table-border-color;
+  }
+
+  thead th {//标题行
+    vertical-align: bottom;
+    border-bottom: (2 * $table-border-width) solid $table-border-color;
+  }
+
+  tbody + tbody {
+    //第二个及后面的tbody分割得开一点
+    border-top: (2 * $table-border-width) solid $table-border-color;
+  }
+
+  .table {//嵌套的表格是白色的
+    background-color: $body-bg;
+  }
+}
+
+.table-sm {//小尺寸的表格，单元格内边距缩小
+  th,
+  td {
+    padding: $table-cell-padding-sm;
+  }
+}
+
+//有全边框+无边框表格的样式
+
+.table-bordered {
+  border: $table-border-width solid $table-border-color;
+
+  th,
+  td {
+    border: $table-border-width solid $table-border-color;
+  }
+
+  thead {
+    th,
+    td {
+      border-bottom-width: 2 * $table-border-width;
+    }
+  }
+}
+
+//无边框表格
+.table-borderless {
+  th,
+  td,
+  thead th,
+  tbody + tbody {
+    border: 0;
+  }
+}
+
+
+//条纹表格
+
+.table-striped {
+  tbody tr:nth-of-type(#{$table-striped-order}) {
+    //这个选择器有点意思
+    background-color: $table-accent-bg;
+  }
+}
+
+//悬停效果
+
+.table-hover {
+  tbody tr {
+    @include hover {
+      background-color: $table-hover-bg;
+    }
+  }
+}
+
+//有颜色的表格和对应的悬停效果
+
+@each $color, $value in $theme-colors {
+  //颜色名 提高72%的颜色值 提高48%的边框颜色
+  @include table-row-variant
+  ($color,
+   theme-color-level($color, $table-bg-level),
+   theme-color-level($color, $table-border-level));
+  //第二参数
+  // $color, $table-bg-level：-9；$color, $table-border-level:-6
+}
+
+@include table-row-variant(active, $table-active-bg);
+//.table-active,干嘛用的
+
+
+// 黑色风格的表格
+
+.table {
+  .thead-dark { //黑表头
+    th {
+      color: $table-dark-color;
+      background-color: $table-dark-bg;
+      border-color: $table-dark-border-color;
+    }
+  }
+
+  .thead-light {  //白表头
+    th {
+      color: $table-head-color;
+      background-color: $table-head-bg;
+      border-color: $table-border-color;
+    }
+  }
+}
+
+.table-dark {//整个表格都是黑色
+  color: $table-dark-color;
+  background-color: $table-dark-bg;
+
+  th,
+  td,
+  thead th {
+    border-color: $table-dark-border-color;//改变颜色
+  }
+
+  &.table-bordered {
+    border: 0;
+  }
+
+  &.table-striped {//黑暗背景下的条纹
+    tbody tr:nth-of-type(odd) {
+      background-color: $table-dark-accent-bg;
+    }
+  }
+
+  &.table-hover {
+    tbody tr {
+      @include hover {//悬停效果
+        background-color: $table-dark-hover-bg;
+      }
+    }
+  }
+}
+
+
+//响应式表格
+//当屏幕较小时，防止缩小溢出
+
+.table-responsive {
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    //循环 xs sm md lg xl
+    $next: breakpoint-next($breakpoint, $grid-breakpoints);
+    //返回sm md lg null
+    $infix: breakpoint-infix($next, $grid-breakpoints);
+    //得到 空字符串 -sm -md -lg -xl
+
+    &#{$infix} {
+      @include media-breakpoint-down($breakpoint) {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        > .table-bordered {
+          border: 0;
+        }
+      }
+    }
+  }
+}

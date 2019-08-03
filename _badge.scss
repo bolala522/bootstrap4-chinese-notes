@@ -1,0 +1,52 @@
+@charset "utf-8";
+
+.badge {//基础样式
+  display: inline-block;//行内块 上下边距 行高起作用
+  padding: $badge-padding-y $badge-padding-x;
+  font-size: $badge-font-size;
+  font-weight: $badge-font-weight;
+  line-height: 1;
+  text-align: center;//字体居中
+  white-space: nowrap;//文本不进行换行
+  vertical-align: baseline;//和父元素的基线对齐
+  @include border-radius($badge-border-radius);
+
+  @at-root a#{&} {
+    @include hover-focus {
+      //跳出嵌套  a.badge:hover, a.badge:focus
+      text-decoration: none;
+    }
+  }
+
+  // 空徽章自动折叠
+  &:empty {
+    display: none;
+  }
+}
+
+//按钮下的徽章 好细心 1px都修复
+.btn .badge {
+  position: relative;
+  top: -1px;
+}
+
+//胶囊徽章
+.badge-pill {//加宽两边宽度 圆角更大
+  padding-right: $badge-pill-padding-x;
+  padding-left: $badge-pill-padding-x;
+  @include border-radius($badge-pill-border-radius);
+}
+
+//配套主题色 a元素时会有悬停效果
+@each $color, $value in $theme-colors {
+  .badge-#{$color} {
+    @include badge-variant($value);
+  }
+}
+//.badge-primary {
+//  color: #fff;
+//  background-color: #007bff; }
+//  a.badge-primary:hover, a.badge-primary:focus {
+//    color: #fff;
+//    background-color: #0062cc; }
+

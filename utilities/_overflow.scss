@@ -1,0 +1,5 @@
+@charset "utf-8";
+@each $value in $overflows {
+  //循环生成代码
+  .overflow-#{$value} { overflow: $value !important; }
+}

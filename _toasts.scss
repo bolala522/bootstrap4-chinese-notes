@@ -1,0 +1,46 @@
+@charset "utf-8";
+//弹出消息框
+.toast {
+  max-width: $toast-max-width;//最大宽度
+  overflow: hidden; //让嵌套的的背景的圆角隐藏住
+  font-size: $toast-font-size; // knock it down to 14px
+  background-color: $toast-background-color;
+  background-clip: padding-box;//从边的内部显示背景色
+  border: $toast-border-width solid $toast-border-color;
+  border-radius: $toast-border-radius;//来点圆角
+  box-shadow: $toast-box-shadow;
+  backdrop-filter: blur(10px);//兼容性不好 背景层加模糊
+  opacity: 0;//默认不显示
+
+  &:not(:last-child) {
+    margin-bottom: $toast-padding-x;//并列式 加外底边距
+  }
+
+  &.showing {
+    opacity: 1;//显示出来
+  }
+
+  &.show {
+    display: block;//显示出来
+    opacity: 1;
+  }
+
+  &.hide {//先透明 在让元素消失
+    display: none;
+  }
+}
+
+.toast-header {//头部
+  display: flex;
+  align-items: center;//竖直方向中间对齐
+  padding: $toast-padding-y $toast-padding-x;
+  color: $toast-header-color;
+  background-color: $toast-header-background-color;
+  background-clip: padding-box;
+  border-bottom: $toast-border-width solid $toast-header-border-color;
+  //形成分割线
+}
+
+.toast-body {
+  padding: $toast-padding-x;
+}

@@ -1,0 +1,10 @@
+$map1: (
+        key1:value1,
+        key2:value2,
+        key3:value3
+);
+@each $key,$value in $map1{
+  .#{$key}{
+    color:$value;
+  }
+}

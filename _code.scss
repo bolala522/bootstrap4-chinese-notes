@@ -1,0 +1,46 @@
+@charset "utf-8";
+// 内联代码 例如：<code>&lt;section&gt;</code>
+code {
+  font-size: $code-font-size;
+  color: $code-color;
+  word-break: break-word;
+  a > & {
+    color: inherit;
+  }
+}
+
+//键盘的显示
+kbd {
+  padding: $kbd-padding-y $kbd-padding-x;
+  font-size: $kbd-font-size;
+  color: $kbd-color;
+  background-color: $kbd-bg;
+  @include border-radius($border-radius-sm);
+  @include box-shadow($kbd-box-shadow);
+
+  kbd {
+    padding: 0;
+    font-size: 100%;
+    font-weight: $nested-kbd-font-weight;
+    @include box-shadow(none);
+  }
+}
+
+// 代码块
+pre {
+  display: block;
+  font-size: $code-font-size;
+  color: $pre-color;
+
+  code {
+    font-size: inherit;
+    color: inherit;
+    word-break: normal;
+  }
+}
+
+// 限制高度的代码块
+.pre-scrollable {
+  max-height: $pre-scrollable-max-height;
+  overflow-y: scroll;
+}

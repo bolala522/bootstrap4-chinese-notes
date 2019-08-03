@@ -1,0 +1,12 @@
+@charset "utf-8";
+@each $breakpoint in map-keys($grid-breakpoints) {
+  //循环 xs sm md lg xl
+  @include media-breakpoint-up($breakpoint) {
+    //null 576px 768px 992px 1200px 加入媒体查询
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    //得到 空字符串 -sm -md -lg -xl
+    .float#{$infix}-left  { @include float-left; }//左浮动
+    .float#{$infix}-right { @include float-right; }//右浮动
+    .float#{$infix}-none  { @include float-none; }//无浮动
+  }
+}

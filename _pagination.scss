@@ -1,0 +1,81 @@
+@charset "utf-8";
+//综合运用flex的好机会
+.pagination {//用在ul上
+  display: flex;//flex布局
+  @include list-unstyled();//li没有圆点
+  @include border-radius();
+}
+
+.page-item {//用在li上
+  &:first-child {//第一个链接的特殊样式
+    .page-link {
+      margin-left: 0; //保留边框
+      @include border-left-radius($border-radius);//左上左下来点圆角
+    }
+  }
+  &:last-child {//最后一个连接
+    .page-link {
+      @include border-right-radius($border-radius);
+    }
+  }
+
+  &.active .page-link {//激活时的状态
+    z-index: 1;
+    color: $pagination-active-color;
+    background-color: $pagination-active-bg;
+    border-color: $pagination-active-border-color;
+  }
+
+  &.disabled .page-link {//不可选的状态
+    color: $pagination-disabled-color;
+    pointer-events: none;
+    // Opinionated: remove the "hand" cursor set previously for .page-link
+    cursor: auto;
+    background-color: $pagination-disabled-bg;
+    border-color: $pagination-disabled-border-color;
+  }
+}
+
+
+.page-link { //链接的样式
+  position: relative;
+  display: block;
+  padding: $pagination-padding-y $pagination-padding-x;
+  margin-left: -$pagination-border-width;
+  //往前一个像素 隐藏掉1px的边框
+  line-height: $pagination-line-height;//上下来点高度
+  color: $pagination-color;//链接的颜色
+  background-color: $pagination-bg;//背景色
+  border: $pagination-border-width solid $pagination-border-color;//来点边框
+
+  &:hover {//悬浮时
+    z-index: 2;
+    color: $pagination-hover-color;
+    text-decoration: none;
+    background-color: $pagination-hover-bg;
+    border-color: $pagination-hover-border-color;
+  }
+
+  &:focus {
+    z-index: 2;
+    outline: $pagination-focus-outline;//和border的区别 默认聚焦有蓝线
+    box-shadow: $pagination-focus-box-shadow;//来点阴影
+  }
+
+  // Opinionated: add "hand" cursor to non-disabled .page-link elements
+  &:not(:disabled):not(.disabled) {
+    cursor: pointer;
+  }
+}
+
+//
+// Sizing 大小尺寸
+//大尺寸的是0.3圆角 小的是0.2的圆角
+
+.pagination-lg {
+  @include pagination-size($pagination-padding-y-lg, $pagination-padding-x-lg, $font-size-lg, $line-height-lg, $border-radius-lg);
+}
+
+.pagination-sm {
+  @include pagination-size($pagination-padding-y-sm, $pagination-padding-x-sm, $font-size-sm, $line-height-sm, $border-radius-sm);
+}

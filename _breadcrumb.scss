@@ -1,0 +1,36 @@
+@charset "utf-8";
+.breadcrumb {//默认用ol列表
+  display: flex;
+  flex-wrap: wrap;
+  padding: $breadcrumb-padding-y $breadcrumb-padding-x;
+  margin-bottom: $breadcrumb-margin-bottom;
+  list-style: none;
+  background-color: $breadcrumb-bg;
+  @include border-radius($breadcrumb-border-radius);
+}
+
+.breadcrumb-item {//用在li上
+  + .breadcrumb-item {//第二个开始有边距 从分隔符向左计算
+    padding-left: $breadcrumb-item-padding;
+
+    &::before {//第二个开始前面生成内容
+      display: inline-block;
+      padding-right: $breadcrumb-item-padding;
+      //从分隔符向右计算的内边距
+      color: $breadcrumb-divider-color;
+      content: $breadcrumb-divider;//生成内容
+    }
+  }
+
+ //兼容IE9-11的显示
+  + .breadcrumb-item:hover::before {//干嘛用的
+    text-decoration: underline;
+  }
+  + .breadcrumb-item:hover::before {
+    text-decoration: none;
+  }
+
+  &.active {
+    color: $breadcrumb-active-color;
+  }
+}

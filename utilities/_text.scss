@@ -1,0 +1,60 @@
+@charset "utf-8";
+.text-monospace { font-family: $font-family-monospace; }
+//新增的一个字体选项
+
+//对齐
+.text-justify  { text-align: justify !important; }//两端对齐
+.text-wrap     { white-space: normal !important; }//换行
+.text-nowrap   { white-space: nowrap !important; }//不换行
+.text-truncate { @include text-truncate; }//截断 省略号
+
+//响应式的对齐
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    //循环
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    //得到前缀
+    .text#{$infix}-left   { text-align: left !important; }
+    .text#{$infix}-right  { text-align: right !important; }
+    .text#{$infix}-center { text-align: center !important; }
+    //.text-left .text-right .text-center
+  }
+}
+
+//转大小写
+.text-lowercase  { text-transform: lowercase !important; }
+.text-uppercase  { text-transform: uppercase !important; }
+.text-capitalize { text-transform: capitalize !important; }
+//每个单词大写开头
+
+// 加粗和斜体
+.font-weight-light   { font-weight: $font-weight-light !important; }//300
+.font-weight-lighter { font-weight: $font-weight-lighter !important; }
+.font-weight-normal  { font-weight: $font-weight-normal !important; }//400
+.font-weight-bold    { font-weight: $font-weight-bold !important; }//700
+.font-weight-bolder  { font-weight: $font-weight-bolder !important; }
+.font-italic         { font-style: italic !important; }
+
+//文字颜色
+.text-white { color: $white !important; } //白色文字
+
+@each $color, $value in $theme-colors {
+  //循环主题色
+  @include text-emphasis-variant(".text-#{$color}", $value);
+}
+
+.text-body { color: $body-color !important; }//主体灰色
+.text-muted { color: $text-muted !important; }//弱色
+
+.text-black-50 { color: rgba($black, .5) !important; }//50%黑色
+.text-white-50 { color: rgba($white, .5) !important; }//50%白色
+
+//隐藏
+.text-hide {
+  @include text-hide($ignore-warning: true);
+}
+//无下划线
+.text-decoration-none { text-decoration: none !important; }
+
+//重置
+.text-reset { color: inherit !important; }

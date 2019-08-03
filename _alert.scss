@@ -1,0 +1,53 @@
+@charset "utf-8";
+
+//提醒框
+.alert {
+  position: relative;//来个绝对定位
+  padding: $alert-padding-y $alert-padding-x;
+  margin-bottom: $alert-margin-bottom;
+  border: $alert-border-width solid transparent;//透明边框
+  @include border-radius($alert-border-radius);
+}
+
+//头部
+.alert-heading {
+  color: inherit;
+}
+
+//链接字体加重
+.alert-link {
+  font-weight: $alert-link-font-weight;
+}
+
+//这个用在.alert上，有关闭按钮时
+.alert-dismissible {
+  padding-right: $close-font-size + $alert-padding-x * 2;
+  //来点有内边距,防止一行不够时，跑到关闭按钮上
+
+  .close {
+    position: absolute;//绝对定位 相对于.alert定位到右上角上
+    top: 0;
+    right: 0;
+    padding: $alert-padding-y $alert-padding-x;
+    color: inherit;
+  }
+}
+
+// 配套主题色
+@each $color, $value in $theme-colors {
+  .alert-#{$color} {
+    @include alert-variant
+    (theme-color-level($color, $alert-bg-level),
+     theme-color-level($color, $alert-border-level),
+     theme-color-level($color, $alert-color-level));
+  }
+}
+
+//.alert-primary {
+//  color: #004085;
+//  background-color: #cce5ff;
+//  border-color: #b8daff; }
+//  .alert-primary hr {
+//    border-top-color: #9fcdff; }
+//  .alert-primary .alert-link {
+//    color: #002752; }

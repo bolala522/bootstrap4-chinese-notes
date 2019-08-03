@@ -1,0 +1,146 @@
+@charset "utf-8";
+// stylelint-disable selector-no-qualifying-type
+
+// 按钮组
+.btn-group,
+.btn-group-vertical {
+  position: relative;//相对定位
+  display: inline-flex;//行内弹性盒布局
+  vertical-align: middle; // match .btn alignment given font-size hack above
+
+  > .btn {
+    position: relative;
+    flex: 1 1 auto;//内部平均分布
+
+    // Bring the hover, focused, and "active" buttons to the front to overlay
+    // the borders properly
+    @include hover {
+      z-index: 1;
+    }
+    &:focus,
+    &:active,
+    &.active {
+      z-index: 1;
+    }
+  }
+}
+
+.btn-toolbar { //多个按钮组的组合
+  display: flex;//弹性盒布局
+  flex-wrap: wrap;//不换行
+  justify-content: flex-start;//水平对齐
+
+  .input-group {
+    width: auto;//表单组的宽度变成自己的宽度
+  }
+}
+
+.btn-group {
+  // Prevent double borders when buttons are next to each other
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) {
+    margin-left: -$btn-border-width;//缩进一些外边距
+  }
+
+  // Reset rounded corners//重置圆角
+  > .btn:not(:last-child):not(.dropdown-toggle),//中间的圆角去掉
+  > .btn-group:not(:last-child) > .btn {
+    @include border-right-radius(0);
+  }
+
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) > .btn {
+    @include border-left-radius(0);
+  }
+}
+
+// Sizing大小
+//
+// Remix the default button sizing classes into new ones for easier manipulation.
+
+.btn-group-sm > .btn { @extend .btn-sm; }//统一的小按钮
+.btn-group-lg > .btn { @extend .btn-lg; }
+
+
+//
+// Split button dropdowns
+//
+
+.dropdown-toggle-split {//按钮组后面的拆分下拉
+  padding-right: $btn-padding-x * .75;
+  padding-left: $btn-padding-x * .75;
+
+  &::after,
+  .dropup &::after,
+  .dropright &::after {
+    margin-left: 0;
+  }
+
+  .dropleft &::before {
+    margin-right: 0;
+  }
+}
+
+.btn-sm + .dropdown-toggle-split {//小按钮后面的箭头
+  padding-right: $btn-padding-x-sm * .75;
+  padding-left: $btn-padding-x-sm * .75;
+}
+
+.btn-lg + .dropdown-toggle-split {//大按钮后面的箭头
+  padding-right: $btn-padding-x-lg * .75;
+  padding-left: $btn-padding-x-lg * .75;
+}
+
+
+.btn-group.show .dropdown-toggle {
+  @include box-shadow($btn-active-box-shadow);
+
+  &.btn-link {
+    @include box-shadow(none);
+  }
+}
+
+// Vertical button groups 垂直分布的按钮组
+//
+
+.btn-group-vertical {
+  flex-direction: column;//列方向
+  align-items: flex-start;//垂直方向的对齐
+  justify-content: center;//水平方向的对齐
+
+  > .btn,
+  > .btn-group {
+    width: 100%;//保持相同的宽度
+  }
+
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) {
+    margin-top: -$btn-border-width;
+  }
+
+  // Reset rounded corners
+  > .btn:not(:last-child):not(.dropdown-toggle),
+  > .btn-group:not(:last-child) > .btn {
+    @include border-bottom-radius(0);
+  }
+
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) > .btn {
+    @include border-top-radius(0);
+  }
+}
+
+//这个部分没心思看。。。。
+.btn-group-toggle {
+  > .btn,
+  > .btn-group > .btn {
+    margin-bottom: 0; // Override default `<label>` value
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      position: absolute;
+      clip: rect(0, 0, 0, 0);//裁切图像
+      pointer-events: none;
+    }
+  }
+}

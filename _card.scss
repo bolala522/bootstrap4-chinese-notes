@@ -1,0 +1,301 @@
+@charset "utf-8";
+
+.card {
+  position: relative;//相对定位
+  display: flex;//flex布局
+  flex-direction: column;//默认列排列
+  min-width: 0;
+  word-wrap: break-word;//强制换行
+  background-color: $card-bg;
+  background-clip: border-box;
+  border: $card-border-width solid $card-border-color;
+  @include border-radius($card-border-radius);
+
+  > hr {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  > .list-group:first-child {//内部有list-group时的样式
+    .list-group-item:first-child {
+      @include border-top-radius($card-border-radius);
+    }
+  }
+
+  > .list-group:last-child {
+    .list-group-item:last-child {
+      @include border-bottom-radius($card-border-radius);
+    }
+  }
+}
+
+.card-body {//卡片主体内容
+  flex: 1 1 auto;//自动伸长
+  padding: $card-spacer-x; //四周有边距
+}
+
+.card-title {//标题
+  margin-bottom: $card-spacer-y;//标题下面边距大一点
+}
+
+.card-subtitle {//副标题
+  margin-top: -$card-spacer-y / 2;//离上面近一点
+  margin-bottom: 0;
+}
+
+.card-text:last-child {//正文部分
+  margin-bottom: 0;
+}
+
+.card-link {//链接
+  @include hover {
+    text-decoration: none;
+  }
+
+  + .card-link {//前面有一个链接时来一个左外边距
+    margin-left: $card-spacer-x;
+  }
+}
+
+
+//头和脚(可选)
+
+.card-header {//卡片头部
+  padding: $card-spacer-y $card-spacer-x;
+  margin-bottom: 0;
+  color: $card-cap-color;
+  background-color: $card-cap-bg;
+  border-bottom: $card-border-width solid $card-border-color;
+
+  &:first-child {
+    @include border-radius($card-inner-border-radius $card-inner-border-radius 0 0);
+  }
+
+  + .list-group {
+    .list-group-item:first-child {
+      border-top: 0;
+    }
+    //紧接header 后面list-group 下的第一个item 这个选择器有点意思
+  }
+}
+
+.card-footer {//卡片底部
+  padding: $card-spacer-y $card-spacer-x;
+  background-color: $card-cap-bg;
+  border-top: $card-border-width solid $card-border-color;
+
+  &:last-child {
+    @include border-radius
+    (0 0 $card-inner-border-radius $card-inner-border-radius);
+  }
+
+}
+
+
+// 头部里的导航部分
+//
+
+.card-header-tabs {
+  margin-right: -$card-spacer-x / 2;
+  margin-bottom: -$card-spacer-y;
+  margin-left: -$card-spacer-x / 2;
+  border-bottom: 0;
+}
+
+.card-header-pills {
+  margin-right: -$card-spacer-x / 2;
+  margin-left: -$card-spacer-x / 2;
+}
+
+// 卡片中的图片
+
+.card-img-overlay {//前面一个img 这个部分会浮在图片之上
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: $card-img-overlay-padding;
+}
+
+.card-img {
+  width: 100%;
+  @include border-radius($card-inner-border-radius);
+}
+
+// 卡片的图片封面
+.card-img-top {
+  width: 100%;
+  @include border-top-radius($card-inner-border-radius);
+}
+
+.card-img-bottom {
+  width: 100%;
+  @include border-bottom-radius($card-inner-border-radius);
+}
+
+
+// 不相连的卡片组
+
+.card-deck {
+  display: flex;
+  flex-direction: column;//默认最小屏幕下是列布局的
+
+  .card {
+    margin-bottom: $card-deck-margin;
+  }
+
+  @include media-breakpoint-up(sm) {
+    flex-flow: row wrap;
+    margin-right: -$card-deck-margin;
+    margin-left: -$card-deck-margin;
+
+    .card {
+      display: flex;
+      // Flexbugs #4: https://github.com/philipwalton/flexbugs#flexbug-4
+      flex: 1 0 0%;
+      flex-direction: column;
+      margin-right: $card-deck-margin;//形成隔断的距离
+      margin-bottom: 0; // Override the default
+      margin-left: $card-deck-margin;
+    }
+  }
+}
+
+
+//
+// Card groups相连的卡片组
+//
+
+.card-group {
+  display: flex;
+  flex-direction: column;
+
+  > .card {
+    margin-bottom: $card-group-margin;//竖屏是有下边距
+  }
+
+  @include media-breakpoint-up(sm) {//实现媒体查询
+    flex-flow: row wrap;
+    > .card {
+      flex: 1 0 0%;//就是平分的意思
+      margin-bottom: 0;
+
+      + .card {//后面的就是没边距了
+        margin-left: 0;
+        border-left: 0;
+      }
+
+      @if $enable-rounded {
+        &:first-child {
+          @include border-right-radius(0);
+
+          .card-img-top,
+          .card-header {
+            border-top-right-radius: 0;
+          }
+          .card-img-bottom,
+          .card-footer {
+            border-bottom-right-radius: 0;
+          }
+        }
+
+        &:last-child {
+          @include border-left-radius(0);
+
+          .card-img-top,
+          .card-header {
+            border-top-left-radius: 0;
+          }
+          .card-img-bottom,
+          .card-footer {
+            border-bottom-left-radius: 0;
+          }
+        }
+
+        &:only-child {//只有一个时
+          @include border-radius($card-border-radius);
+
+          .card-img-top,
+          .card-header {
+            @include border-top-radius($card-border-radius);
+          }
+          .card-img-bottom,
+          .card-footer {
+            @include border-bottom-radius($card-border-radius);
+          }
+        }
+
+        &:not(:first-child):not(:last-child):not(:only-child) {
+          @include border-radius(0);
+          .card-img-top,
+          .card-img-bottom,
+          .card-header,
+          .card-footer {
+            @include border-radius(0);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+//
+// Columns 瀑布流式卡片
+//
+
+.card-columns {
+  .card {
+    margin-bottom: $card-columns-margin;
+  }
+
+  @include media-breakpoint-up(sm) {
+    column-count: $card-columns-count; //分三列
+    column-gap: $card-columns-gap;//之间的间隔
+    orphans: 1;
+    widows: 1;//打印分页时 顶部保留1行
+
+    .card {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+}
+
+
+//
+// Accordion配合折叠使用
+//
+
+.accordion {
+  .card {
+    overflow: hidden;//默认不可见
+
+    &:not(:first-of-type) {
+      .card-header:first-child {
+        border-radius: 0;
+      }
+
+      &:not(:last-of-type) {
+        border-bottom: 0;
+        border-radius: 0;
+      }
+    }
+
+    &:first-of-type {
+      border-bottom: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:last-of-type {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .card-header {
+      margin-bottom: -$card-border-width;
+    }
+  }
+}

@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+//响应式容器
+@if $enable-grid-classes {//是否开启栅格
+  .container {
+    @include make-container();
+    @include make-container-max-widths();
+  }
+}
+
+//示例容器
+.example-container {
+  @include make-container();
+  width: 800px;
+}
+
+//流体容器
+@if $enable-grid-classes {
+  .container-fluid {
+    @include make-container();
+  }
+}
+
+// 行
+@if $enable-grid-classes {
+  .row {
+    @include make-row();
+  }
+  .no-gutters {//用在.row行
+    margin-right: 0;
+    margin-left: 0;//不靠边
+
+    > .col,
+    > [class*="col-"] {
+      padding-right: 0;
+      padding-left: 0;
+    }//内部的列间距为0
+  }
+}
+
+// Columns
+
+@if $enable-grid-classes {//是否开启栅格
+  @include make-grid-columns();
+}

@@ -1,0 +1,14 @@
+@charset "utf-8";
+@mixin alert-variant($background, $border, $color) {
+  color: $color;//字体颜色
+  @include gradient-bg($background);//背景色
+  border-color: $border;//边框颜色
+
+  hr {
+    border-top-color: darken($border, 5%);//边框深一点
+  }
+
+  .alert-link {
+    color: darken($color, 10%);//链接的颜色
+  }
+}

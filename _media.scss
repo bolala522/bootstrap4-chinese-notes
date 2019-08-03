@@ -1,0 +1,10 @@
+@charset "utf-8";
+//大量用了flex布局的特性
+.media {
+  display: flex;
+  align-items: flex-start;
+}
+
+.media-body {
+  flex: 1; // 1 1 0%；
+}

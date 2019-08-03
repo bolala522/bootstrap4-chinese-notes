@@ -1,0 +1,116 @@
+@charset "utf-8";
+
+// 基本样式
+// `<nav>`s 或者 `<ul>`s.
+
+.nav {
+  display: flex;//flex布局
+  flex-wrap: wrap;//不换行
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;//没有小圆点
+}
+
+.nav-link {
+  display: block;
+  padding: $nav-link-padding-y $nav-link-padding-x;//周围扩展开
+
+  @include hover-focus {
+    text-decoration: none;
+  }
+
+  //不能点击的样式
+  &.disabled {
+    color: $nav-link-disabled-color;
+    pointer-events: none;
+    cursor: default;
+  }
+}
+
+
+// 表格式导航
+
+.nav-tabs {//下面有线 激活状态就是周围有框
+  border-bottom: $nav-tabs-border-width solid $nav-tabs-border-color;
+
+  .nav-item {//里面的各个子项
+    margin-bottom: -$nav-tabs-border-width;
+  }
+
+  .nav-link {
+    border: $nav-tabs-border-width solid transparent;
+    @include border-top-radius($nav-tabs-border-radius);
+
+    @include hover-focus {//悬浮的样子
+      border-color: $nav-tabs-link-hover-border-color;
+    }
+
+    &.disabled {
+      color: $nav-link-disabled-color;
+      background-color: transparent;
+      border-color: transparent;
+    }
+  }
+
+  .nav-link.active,//激活状态的样式
+  .nav-item.show .nav-link {
+    color: $nav-tabs-link-active-color;
+    background-color: $nav-tabs-link-active-bg;
+    border-color: $nav-tabs-link-active-border-color;
+  }
+
+  .dropdown-menu {
+    // Make dropdown border overlap tab border
+    margin-top: -$nav-tabs-border-width;
+    @include border-top-radius(0);
+  }
+}
+
+
+//
+// Pills  胶囊式导航
+//
+
+.nav-pills {
+  .nav-link {
+    @include border-radius($nav-pills-border-radius);
+  }
+
+  .nav-link.active,
+  .show > .nav-link {
+    color: $nav-pills-link-active-color;
+    background-color: $nav-pills-link-active-bg;
+  }
+}
+
+
+//
+// 两种两端对齐
+//
+
+.nav-fill {
+  .nav-item {
+    flex: 1 1 auto;//子项允许自动伸展
+    text-align: center;
+  }
+}
+
+.nav-justified {//想让按钮的宽度相同时
+  .nav-item {
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: center;
+  }
+}
+
+
+// 点击切换时的内容块
+// 配合js使用实现切换显示
+.tab-content {
+  > .tab-pane {
+    display: none;
+  }
+  > .active {
+    display: block;
+  }
+}

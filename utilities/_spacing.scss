@@ -1,0 +1,79 @@
+@charset "utf-8";
+@each $breakpoint in map-keys($grid-breakpoints) {
+  //循环 xs sm md lg xl
+  @include media-breakpoint-up($breakpoint) {
+    //null 576px 768px 992px 1200px 添加媒体查询
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    //得到前缀 空字符串 -sm -md -lg -xl
+
+    @each $prop, $abbrev in (margin: m, padding: p) {
+      //循环内边距/外边距
+      @each $size, $length in $spacers {
+        //循环距离数组 例如 3:1rem
+        .#{$abbrev}#{$infix}-#{$size} { #{$prop}: $length !important; }
+        //.m-0 { margin: 0}
+        .#{$abbrev}t#{$infix}-#{$size},//.mt-0
+        .#{$abbrev}y#{$infix}-#{$size} {//.my-0
+          #{$prop}-top: $length !important;
+        }
+        .#{$abbrev}r#{$infix}-#{$size},//.mr-0
+        .#{$abbrev}x#{$infix}-#{$size} {//.mx-0
+          #{$prop}-right: $length !important;
+        }
+        .#{$abbrev}b#{$infix}-#{$size},//.mb-0
+        .#{$abbrev}y#{$infix}-#{$size} {//.my-0
+          #{$prop}-bottom: $length !important;
+        }
+        .#{$abbrev}l#{$infix}-#{$size},//.ml-0
+        .#{$abbrev}x#{$infix}-#{$size} {//.mx-0
+          #{$prop}-left: $length !important;
+        }
+      }
+    }
+
+    // 负边距
+    @each $size, $length in $spacers {
+      //循环距离数组 例如 3:1rem
+      @if $size != 0 {//排除掉0
+        .m#{$infix}-n#{$size} { margin: -$length !important; }
+        //.m-n1
+        .mt#{$infix}-n#{$size},//.mt-n1
+        .my#{$infix}-n#{$size} {//.my-n1
+          margin-top: -$length !important;
+        }
+        .mr#{$infix}-n#{$size},//.mr-n1
+        .mx#{$infix}-n#{$size} {//.mx-n1
+          margin-right: -$length !important;
+        }
+        .mb#{$infix}-n#{$size},//.mb-n1
+        .my#{$infix}-n#{$size} {//.my-n1
+          margin-bottom: -$length !important;
+        }
+        .ml#{$infix}-n#{$size},//.ml-n1
+        .mx#{$infix}-n#{$size} {//.mx-n1
+          margin-left: -$length !important;
+        }
+      }
+    }
+
+    // Some special margin utils auto
+    .m#{$infix}-auto { margin: auto !important; }
+    //.m-auto
+    .mt#{$infix}-auto,
+    .my#{$infix}-auto {
+      margin-top: auto !important;
+    }
+    .mr#{$infix}-auto,
+    .mx#{$infix}-auto {
+      margin-right: auto !important;
+    }
+    .mb#{$infix}-auto,
+    .my#{$infix}-auto {
+      margin-bottom: auto !important;
+    }
+    .ml#{$infix}-auto,
+    .mx#{$infix}-auto {
+      margin-left: auto !important;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+@charset "utf-8";
+@each $breakpoint in map-keys($grid-breakpoints) {
+  //循环数组 xs sm md lg xl
+  @include media-breakpoint-up($breakpoint) {
+    //根据null 576px 768px 992px 1200px，加入媒体查询
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    //得到前缀 空字符串 -sm -md -lg -xl
+
+    .d#{$infix}-none         { display: none !important; }
+    .d#{$infix}-inline       { display: inline !important; }
+    .d#{$infix}-inline-block { display: inline-block !important; }
+    .d#{$infix}-block        { display: block !important; }
+    .d#{$infix}-table        { display: table !important; }
+    .d#{$infix}-table-row    { display: table-row !important; }
+    .d#{$infix}-table-cell   { display: table-cell !important; }
+    .d#{$infix}-flex         { display: flex !important; }
+    .d#{$infix}-inline-flex  { display: inline-flex !important; }
+  }
+}
+
+
+
+@media print {//打印设备的媒体查询
+  .d-print-none         { display: none !important; }
+  .d-print-inline       { display: inline !important; }
+  .d-print-inline-block { display: inline-block !important; }
+  .d-print-block        { display: block !important; }
+  .d-print-table        { display: table !important; }
+  .d-print-table-row    { display: table-row !important; }
+  .d-print-table-cell   { display: table-cell !important; }
+  .d-print-flex         { display: flex !important; }
+  .d-print-inline-flex  { display: inline-flex !important; }
+}

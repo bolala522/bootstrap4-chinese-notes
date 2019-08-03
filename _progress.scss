@@ -1,0 +1,42 @@
+@charset "utf-8";
+@keyframes progress-bar-stripes {//
+  from { background-position: $progress-height 0; }
+  to { background-position: 0 0; }
+  //  from {动画向左的移动
+  //    background-position: 1rem 0; }
+  //  to {
+  //    background-position: 0 0; } }
+}
+
+.progress {//基本样式
+  display: flex;//flex 布局
+  height: $progress-height;
+  overflow: hidden; // force rounded corners by cropping it让圆角显示出来
+  font-size: $progress-font-size;
+  background-color: $progress-bg;
+  @include border-radius($progress-border-radius);
+  @include box-shadow($progress-box-shadow);
+}
+
+.progress-bar {//里面的进度条
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: $progress-bar-color;//白色字色
+  text-align: center;//里边有文字就居中
+  white-space: nowrap;//不自动换行
+  background-color: $progress-bar-bg;//默认蓝色 可以通过bg-success改颜色
+  @include transition($progress-bar-transition);
+  //transition: width 0.6s ease; 宽度变化时的动画
+}
+
+.progress-bar-striped {//条纹进度条
+  @include gradient-striped();
+//background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-size: $progress-height $progress-height;//
+}
+
+.progress-bar-animated {//添加动画效果
+  animation: progress-bar-stripes $progress-bar-animation-timing;
+  //  animation: progress-bar-stripes 1s linear infinite; } 向左移动循环播放
+}

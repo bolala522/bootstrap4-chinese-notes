@@ -1,0 +1,278 @@
+@charset "utf-8";
+
+//文本表单控件
+//
+.form-control {//用在一般的input上
+  display: block;
+  width: 100%;
+  height: $input-height;//calc(2.25rem + 2px)
+  padding: $input-padding-y $input-padding-x;
+  font-size: $input-font-size;
+  font-weight: $input-font-weight;
+  line-height: $input-line-height;
+  color: $input-color;
+  background-color: $input-bg;
+  background-clip: padding-box;
+  border: $input-border-width solid $input-border-color;
+  @if $enable-rounded {
+    border-radius: $input-border-radius;//圆角
+  } @else {
+    border-radius: 0;
+  }
+
+  @include box-shadow($input-box-shadow);//混合阴影
+  @include transition($input-transition);//传入两个变化的属性
+  //border-color .15s ease-in-out,
+  //ox-shadow .15s ease-in-out !default;
+
+  //IE 10 浏览器下改变下拉按钮的样式
+  &::-ms-expand {
+    background-color: transparent;
+    border: 0;
+  }
+
+  // 获得焦点时的样式
+  @include form-control-focus();
+
+  // Placeholder
+  &::placeholder {
+    color: $input-placeholder-color;
+    opacity: 1;
+  }
+
+  // 禁用时的样式
+  &:disabled,
+  &[readonly] {
+    background-color: $input-disabled-bg;
+    opacity: 1;
+  }
+}
+
+//下拉选单中用到了form-control
+select.form-control {
+  &:focus::-ms-value {//兼容选中的样式
+    color: $input-color;
+    background-color: $input-bg;
+  }
+}
+// 成为块级元素，另起一行
+.form-control-file,
+.form-control-range {
+  display: block;
+  width: 100%;
+}
+
+
+// 表单前的说明文字
+//
+
+.col-form-label {//表单前面的文字 用到了栅格系统 去外边距 上下内边距
+  padding-top: calc(#{$input-padding-y} + #{$input-border-width});
+  padding-bottom: calc(#{$input-padding-y} + #{$input-border-width});
+  margin-bottom: 0; // Override the `<label>/<legend>` default
+  font-size: inherit; // Override the `<legend>` default
+  line-height: $input-line-height;
+}
+
+.col-form-label-lg {//上下内边距更大
+  padding-top: calc(#{$input-padding-y-lg} + #{$input-border-width});
+  padding-bottom: calc(#{$input-padding-y-lg} + #{$input-border-width});
+  font-size: $input-font-size-lg;
+  line-height: $input-line-height-lg;
+}
+
+.col-form-label-sm {//上下内边距更小
+  padding-top: calc(#{$input-padding-y-sm} + #{$input-border-width});
+  padding-bottom: calc(#{$input-padding-y-sm} + #{$input-border-width});
+  font-size: $input-font-size-sm;
+  line-height: $input-line-height-sm;
+}
+
+.form-control-plaintext {//让一个表单的文字，好像一个纯文本一样
+  display: block;
+  width: 100%;
+  padding-top: $input-padding-y;
+  padding-bottom: $input-padding-y;
+  margin-bottom: 0;
+  line-height: $input-line-height;
+  color: $input-plaintext-color;
+  background-color: transparent;
+  border: solid transparent;
+  border-width: $input-border-width 0;
+
+  &.form-control-sm,
+  &.form-control-lg {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+//form-control基础上的样式，控制表单大小
+.form-control-sm {//小表单
+  height: $input-height-sm;
+  padding: $input-padding-y-sm $input-padding-x-sm;
+  font-size: $input-font-size-sm;
+  line-height: $input-line-height-sm;
+  @include border-radius($input-border-radius-sm);
+}
+
+.form-control-lg {//大表单
+  height: $input-height-lg;
+  padding: $input-padding-y-lg $input-padding-x-lg;
+  font-size: $input-font-size-lg;
+  line-height: $input-line-height-lg;
+  @include border-radius($input-border-radius-lg);
+}
+
+// stylelint-disable-next-line no-duplicate-selectors
+select.form-control {
+  &[size],
+  &[multiple] {
+    height: auto;
+  }
+}
+
+textarea.form-control {
+  height: auto;
+}
+
+// Form groups
+//表单组 垂直表单用.form-group 水平表单用栅格系统
+
+.form-group {//加个底部外边距
+  margin-bottom: $form-group-margin-bottom;
+}
+
+.form-text {//比如用在下方的小说明上
+  display: block;
+  margin-top: $form-text-margin-top;
+}
+
+// Form grid
+//表单栅格系统
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -$form-grid-gutter-width / 2;
+  margin-left: -$form-grid-gutter-width / 2;
+
+  > .col,
+  > [class*="col-"] {
+    padding-right: $form-grid-gutter-width / 2;
+    padding-left: $form-grid-gutter-width / 2;
+  }
+}
+
+
+//  复选框 单选按钮
+//
+.form-check {
+  position: relative;
+  display: block;
+  padding-left: $form-check-input-gutter;//主要是左内边距
+}
+
+.form-check-input {
+  position: absolute;//来个相对定位
+  margin-top: $form-check-input-margin-y;//图标更加左移一些
+  margin-left: -$form-check-input-gutter;
+
+  &:disabled ~ .form-check-label {
+    color: $text-muted;
+  }
+}
+
+.form-check-label {//复选框后面的文字底外边距为0
+  margin-bottom: 0;
+}
+
+.form-check-inline {
+  display: inline-flex;
+  align-items: center;//各项居中对齐
+  padding-left: 0; // Override base .form-check
+  margin-right: $form-check-inline-margin-x;
+
+  // Undo .form-check-input defaults and add some `margin-right`.
+  .form-check-input {
+    position: static;
+    margin-top: 0;
+    margin-right: $form-check-inline-input-margin-x;
+    margin-left: 0;
+  }
+}
+
+
+// 表单验证
+
+
+@include form-validation-state("valid", $form-feedback-valid-color);//暂时没看
+@include form-validation-state("invalid", $form-feedback-invalid-color);
+// 内联式表单
+
+.form-inline {//内联式的表单
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center; //保证垂直方向的对齐
+
+
+  .form-check {//测试一下
+    width: 100%;
+  }
+
+  @include media-breakpoint-up(sm) {
+    //@media (min-width: 576px)
+    label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0;
+    }
+
+    .form-group {
+      display: flex;
+      flex: 0 0 auto;
+      flex-flow: row wrap;
+      align-items: center;
+      margin-bottom: 0;
+    }
+
+    .form-control {
+      display: inline-block;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .form-control-plaintext {
+      display: inline-block;
+    }
+
+    .input-group,
+    .custom-select {
+      width: auto;
+    }
+
+    .form-check {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      padding-left: 0;
+    }
+    .form-check-input {
+      position: relative;
+      margin-top: 0;
+      margin-right: $form-check-input-margin-x;
+      margin-left: 0;
+    }
+
+    .custom-control {
+      align-items: center;
+      justify-content: center;
+    }
+    .custom-control-label {
+      margin-bottom: 0;
+    }
+  }
+}
+
